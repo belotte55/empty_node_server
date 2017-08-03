@@ -1,0 +1,26 @@
+{
+  "name": "empty_node_server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "body-parser": "^1.17.2",
+    "colors": "^1.1.2",
+    "express": "^4.15.3",
+    "moment": "^2.18.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/belotte55/empty_node_server.git"
+  },
+  "author": "Frank Bellotto <belotte1355@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/belotte55/empty_node_server/issues"
+  },
+  "homepage": "https://github.com/belotte55/empty_node_server#readme"
+}
