@@ -8,6 +8,7 @@ const app =				express ()
 const server =			require ('http').createServer (app)
 const router =			express.Router ()
 const settings =		require (`${process.env.PWD}/settings`)
+const sequelize =		require (`${process.env.PWD}/api/services/sequelize`).init ()
 const env =				process.env.NODE_ENV
 const bodyParser =		require ('body-parser')
 const Logger =			require (`${process.env.PWD}/api/services/logger`)

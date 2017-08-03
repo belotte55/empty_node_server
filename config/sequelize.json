@@ -1,0 +1,18 @@
+{
+	"development": {
+		"user":		null,
+		"pass":		null,
+		"database":	"dev",
+		"host":		"localhost",
+		"dialect":	"postgres",
+		"logging":	true
+	},
+	"production": {
+		"user":		null,
+		"pass":		null,
+		"database":	"prod",
+		"host":		"localhost",
+		"dialect":	"postgres",
+		"logging":	false
+	}
+}
