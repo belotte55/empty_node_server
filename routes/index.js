@@ -1,6 +1,6 @@
 module.exports = router => {
 	router.route ('/')
 	.get ((req, res) => {
-		return res.end ()
+		return res.end ('Success')
 	})
 }
