@@ -5,7 +5,8 @@
 		"database":	"dev",
 		"host":		"localhost",
 		"dialect":	"postgres",
-		"logging":	true
+		"logging":	false,
+		"alter":	false
 	},
 	"production": {
 		"user":		null,
@@ -13,6 +14,7 @@
 		"database":	"prod",
 		"host":		"localhost",
 		"dialect":	"postgres",
-		"logging":	false
+		"logging":	false,
+		"alter":	false
 	}
 }

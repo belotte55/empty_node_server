@@ -7,6 +7,10 @@ let sequelize =		null
 
 module.exports =	{
 	init: () => {
+		if (config.alter) {
+			console.error (`config.alter doesn't works for now, so is it ignored.`)
+			config.alter = false
+		}
 		sequelize = new Sequelize (config.database, config.user, config.pass, config)
 
 		fs.readdirSync (`${process.env.PWD}/api/models`).forEach (file => {
@@ -20,7 +24,7 @@ module.exports =	{
 			if (models[model].associate) { models[model].associate (models) }
 		})
 
-		sequelize.sync ({ force: config.force || false })
+		sequelize.sync ({ force: config.force || false, alter: config.alter })
 
 		models.sequelize = sequelize
 		models.Sequelize = Sequelize
