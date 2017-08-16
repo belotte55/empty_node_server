@@ -1,0 +1,25 @@
+{
+  "name": "empty_node_server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/belotte55/empty_node_server.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/belotte55/empty_node_server/issues"
+  },
+  "homepage": "https://github.com/belotte55/empty_node_server#readme",
+  "dependencies": {
+    "body-parser": "^1.17.2",
+    "colors": "^1.1.2",
+    "express": "^4.15.4",
+    "moment": "^2.18.1"
+  }
+}
