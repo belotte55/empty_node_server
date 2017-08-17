@@ -1,5 +1,17 @@
 /** @module Logger */
 
+/*
+	Usage:
+	const logger = new require ('./logger') ({
+		filePath: './logs/requests.log', // the directory is automatically created
+		isRequest: true, // log the route and the ip source
+		logTo: 'both' // logger, console, both
+	});
+
+	logger.log (req);
+*/
+
+require ('colors')
 const moment =	require ('moment')
 const fs =		require ('fs')
 const path =	require ('path')
@@ -9,7 +21,9 @@ const path =	require ('path')
 * @constructor
 * @param {Object}		options
 * @param {String}		options.filePath	- Chemin du fichier de logs, a partir de la racine du projet
-* @param {Function}	callback
+* @param {Boolean}		options.isRequest	- Log l'IP, l'utilisateur connecté et le path demandé
+* @param {String}		options.logTo		- console, logger, both -> indique quels logs activer
+* @param {Function}		callback
 * @param {String}		callback.error		- Message qui indique l'erreur
 */
 module.exports = function (options = { }, callback = () => { }) {
@@ -17,6 +31,7 @@ module.exports = function (options = { }, callback = () => { }) {
 
 	this.filePath = options.filePath
 	this.isRequest = options.isRequest
+	this.logTo = options.logTo || 'logger'
 
 	fs.mkdir (`${process.env.PWD}/${path.dirname (options.filePath)}`, 0o755, error => {
 		if (error && error.code != 'EEXIST') { return callback (error) }
@@ -35,12 +50,38 @@ module.exports = function (options = { }, callback = () => { }) {
 */
 module.exports.prototype.log = function (message) {
 	if (this.isRequest) {
-		this.logger.write (`[ ${moment ().format (`YYYY-MM-DD H:mm:ss'SSS`)} ] [ ${message.ip} ] -> ${message.originalUrl} ${JSON.stringify (message.body || message.query || {})}\n`)
+		message = `[ ${moment ().format (`YYYY-MM-DD H:mm:ss'SSS`)} ] [ ${message.ip} ] [ ${message.user && message.user.pseudo || '-'} ] -> [ ${(message.method || '').toUpperCase ()} ] ${message.originalUrl} ${message.body && JSON.stringify (message.body, null, 2) || ''}`
 	} else {
 		if (typeof message === 'object') {
-			this.logger.write (`[ ${moment ().format (`YYYY-MM-DD H:mm:ss'SSS`)} ] ${JSON.stringify (message, null, '\t')}\n`)
+			message = `[ ${moment ().format (`YYYY-MM-DD H:mm:ss'SSS`)} ] ${JSON.stringify (message, null, '\t')}`
 		} else {
-			this.logger.write (`[ ${moment ().format (`YYYY-MM-DD H:mm:ss'SSS`)} ] ${message.toString ()}\n`)
+			message = `[ ${moment ().format (`YYYY-MM-DD H:mm:ss'SSS`)} ] ${message.toString ()}`
 		}
+	}
+
+	if (!this.logTo || this.logTo === 'both' || this.logTo === 'logger') {
+		this.logger.write (message + '\n')
+	}
+	if (this.logTo === 'both' || this.logTo === 'console') {
+		console.log (message)
+	}
+}
+
+module.exports.prototype.error = function (message) {
+	if (this.isRequest) {
+		message = `[ ${moment ().format (`YYYY-MM-DD H:mm:ss'SSS`)} ] [${'ERROR'.red}] [ ${message.ip} ] [ ${message.user && message.user.pseudo || '-'} ] -> [ ${(message.method || '').toUpperCase ()} ] ${message.originalUrl} ${message.body && JSON.stringify (message.body, null, 2) || ''}`
+	} else {
+		if (typeof message === 'object') {
+			message = `[ ${moment ().format (`YYYY-MM-DD H:mm:ss'SSS`)} ] [${'ERROR'.red}] ${JSON.stringify (message, null, '\t')}`
+		} else {
+			message = `[ ${moment ().format (`YYYY-MM-DD H:mm:ss'SSS`)} ] [${'ERROR'.red}] ${message.toString ()}`
+		}
+	}
+
+	if (!this.logTo || this.logTo === 'both' || this.logTo === 'logger') {
+		this.logger.write (message + '\n')
+	}
+	if (this.logTo === 'both' || this.logTo === 'console') {
+		console.error (message)
 	}
 }
