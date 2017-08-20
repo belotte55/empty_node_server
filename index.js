@@ -22,6 +22,7 @@ const logger =			new Logger ({
 /*---------------------------MIDDLEWARES--------------------------------------*/
 app.set ('view engine', 'pug')
 app.use (bodyParser.urlencoded ({ extended: true }))
+app.use (bodyParser.json ())
 app.use ('/js',		express.static ('assets/js'))
 app.use ('/css',	express.static ('assets/css'))
 app.use ('/icons',	express.static ('assets/icons'))
