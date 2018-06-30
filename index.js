@@ -13,10 +13,14 @@ const bodyParser =		require ('body-parser')
 const Logger =			require (`${process.env.PWD}/api/services/logger`)
 /*	Initialize un Logger, qui va ecrire dans le fichier ./logs/log.txt */
 const logger =			new Logger ({
-	filePath: 'logs/log.txt',
+	filePath: 'logs/requests.txt',
 	/*	Indique qu'il faut traiter le parametre comme une requete (log l'utilisateur connecté, la route, etc..) */
 	isRequest: true
 })
+// SEQUELIZE
+if (settings.database_enabled) {
+	require (`${process.env.PWD}/api/services/sequelize_init`).sequelize
+}
 /*----------------------------------------------------------------------------*/
 
 /*---------------------------MIDDLEWARES--------------------------------------*/
