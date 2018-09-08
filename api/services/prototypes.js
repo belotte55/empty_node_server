@@ -1,4 +1,6 @@
+require ('colors')
 const moment =	require ('moment')
+const request =	require ('request')
 const loggers =	{
 	log: console.log,
 	error: console.error
@@ -37,15 +39,18 @@ for (let type of ['log', 'error']) {
 	}
 }
 
-/**
-* Met le premier caractere d'une chaine en majuscule.
-* @method capitalize
-* @return {String}
-*/
 String.prototype.capitalize = function () {
-	return this.charAt(0).toUpperCase() + this.slice(1)
+	return this.toLowerCase ().replace(/(^|\s)([a-z])/g, (m,p1,p2) => p1 + p2.toUpperCase())
 }
 
+String.prototype.insert = function (index, string) {
+	return `${this.substr (0, index)}${string}${this.substr (index)}`
+}
+
+global.get_random_value_from_array = (array) => {
+	return array[Math.floor (Math.random () * array.length)]
+}
+global.Errors = require (`${process.env.PWD}/config/errors`)
 global.rand = (length, numbers_only) => {
 	let key = ''
 
@@ -56,79 +61,15 @@ global.rand = (length, numbers_only) => {
 	return key.toUpperCase ()
 }
 
-global.request_post = ({ url, body, headers } = { }) => {
-	return new Promise ((resolve, reject) => {
-		return request ({
-			url,
-			method: 'POST',
-			json: true,
-			headers,
-			body
-		}, (error, response, body) => {
-			if (error) { return reject (error) }
-			return resolve (body)
-		})
-	})
-}
-global.request_delete = ({ url, body, headers } = { }) => {
-	return new Promise ((resolve, reject) => {
-		return request ({
-			url,
-			method: 'DELETE',
-			json: true,
-			headers,
-			body
-		}, (error, response, body) => {
-			if (error) { return reject (error) }
-			return resolve (body)
-		})
-	})
-}
-global.request_put = ({ url, body, headers } = { }) => {
-	return new Promise ((resolve, reject) => {
-		return request ({
-			url,
-			method: 'PUT',
-			json: true,
-			headers,
-			body
-		}, (error, response, body) => {
-			if (error) { return reject (error) }
-			return resolve (body)
-		})
-	})
-}
-global.request_patch = ({ url, body, headers } = { }) => {
-	return new Promise ((resolve, reject) => {
-		return request ({
-			url,
-			method: 'PATCH',
-			json: true,
-			headers,
-			body
-		}, (error, response, body) => {
-			if (error) { return reject (error) }
-			return resolve (body)
-		})
-	})
-}
-global.request_get = ({ url, headers } = { }) => {
-	return new Promise ((resolve, reject) => {
-		return request ({
-			url,
-			method: 'GET',
-			json: true,
-			headers
-		}, (error, response, body) => {
-			if (error) { return reject (error) }
-			return resolve (body)
-		})
-	})
-}
+require (`${process.env.PWD}/api/services/request`).load_to_global ()
 
 global.require_and_reload = path => {
 	delete require.cache[require.resolve (path)]
 	return require (path)
 }
 
-global.Errors = require (`${process.env.PWD}/config/errors`)
+global.moment = require ('moment')
+global.moment.locale ('fr')
+global.slack = require (`${process.env.PWD}/api/services/slack`)
+global.log_error = require (`${process.env.PWD}/api/services/errors`)
+global.thrower = error => { throw error }

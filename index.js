@@ -1,21 +1,21 @@
 /*---------------------------REQUIREMENTS-------------------------------------*/
 require ('colors')
 process.env.NODE_ENV = process.env.NODE_ENV || 'development'
-const moment =			require ('moment')
-const fs =				require ('fs')
-const express =			require ('express')
+const express =		require ('express')
 const app =				express ()
 const server =			require ('http').createServer (app)
 const router =			express.Router ()
 const settings =		require (`${process.env.PWD}/settings`)
 const env =				process.env.NODE_ENV
-const bodyParser =		require ('body-parser')
+const bodyParser =	require ('body-parser')
 const Logger =			require (`${process.env.PWD}/api/services/logger`)
-/*	Initialize un Logger, qui va ecrire dans le fichier ./logs/log.txt */
-const logger =			new Logger ({
-	filePath: 'logs/requests.txt',
-	/*	Indique qu'il faut traiter le parametre comme une requete (log l'utilisateur connecté, la route, etc..) */
-	isRequest: true
+/*	Initialise un Logger, qui va ecrire dans le fichier ./logs/log.txt */
+const loggers =		{
+	requests: new Logger ({
+		filePath: 'logs/requests.log',
+		/*	Indique qu'il faut traiter le parametre comme une requete (log l'utilisateur connecté, la route, etc..) */
+		isRequest: true
+	}
 })
 // SEQUELIZE
 if (settings.database_enabled) {
